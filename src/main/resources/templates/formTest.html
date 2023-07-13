@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Enviar Email</title>
+</head>
+<body>
+<h2>Formulário de Envio de Email</h2>
+<form id="emailForm" method="post" action="/enviar-email" >
+    <label for="emailRemetente">Remetente:</label>
+    <input type="email" id="emailRemetente" name="emailRemetente">
+    <br><br>
+    <label for="conteudoEmail">Conteúdo do Email:</label>
+    <textarea id="conteudoEmail" name="conteudoEmail"></textarea>
+    <br><br>
+    <input type="submit" value="Enviar">
+</form>
+<script>
+    document.getElementById("emailForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        var form = event.target;
+        var formData = {
+            emailRemetente: form.emailRemetente.value,
+            conteudoEmail: form.conteudoEmail.value
+        };
+
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(function(response) {
+            return response.text();
+        })
+        .then(function(data) {
+            alert(data);
+            form.reset();
+        })
+        .catch(function(error) {
+            console.error('Erro:', error);
+        });
+    });
+</script>
+
+</body>
+</html>
